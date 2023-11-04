@@ -1,0 +1,14 @@
+{
+    "collections": [
+        { "path": "assets/words-collections/collections/zyvely.json" },
+        { "path": "assets/words-collections/collections/kvatera.json" },
+        { "path": "assets/words-collections/collections/transpart.json" },
+        { "path": "assets/words-collections/collections/gorad.json" },
+        { "path": "assets/words-collections/collections/chastki_tsela.json" },
+        { "path": "assets/words-collections/collections/krama.json" },
+        { "path": "assets/words-collections/collections/adzenne.json" },
+        { "path": "assets/words-collections/collections/kamputar.json" },
+        { "path": "assets/words-collections/collections/kaviarnia.json" },
+        { "path": "assets/words-collections/collections/spadchyna.json" }
+    ]
+}

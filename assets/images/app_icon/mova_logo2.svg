@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2.2 (732a01da63, 2022-12-09, custom)"
+   sodipodi:docname="mova_logo2.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="0.73851711"
+     inkscape:cx="46.038202"
+     inkscape:cy="672.29315"
+     inkscape:window-width="2506"
+     inkscape:window-height="1016"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#454545;fill-opacity:1;stroke:#f44336;stroke-width:0.902297;stroke-dasharray:none;stroke-opacity:1"
+       id="rect979"
+       width="49.097702"
+       height="59.097702"
+       x="88.635834"
+       y="138.59801"
+       ry="9.4796124"
+       inkscape:export-filename="../6da08fd3/MovaLogo2(512).png"
+       inkscape:export-xdpi="200.07384"
+       inkscape:export-ydpi="200.07384" />
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:#f44336;stroke-width:0.902297;stroke-dasharray:none;stroke-opacity:1"
+       id="rect111"
+       width="49.097702"
+       height="59.097702"
+       x="92.210159"
+       y="135.31017"
+       ry="9.4796124" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:72px;line-height:0;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#fbfbfb;fill-opacity:1;stroke:#e754ff;stroke-width:8.67509;stroke-dasharray:none;stroke-opacity:1"
+       x="83.794464"
+       y="181.4857"
+       id="text4907"><tspan
+         sodipodi:role="line"
+         id="tspan4961" /></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:46.3965px;line-height:0px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffaaaa;fill-opacity:1;stroke:#f44336;stroke-width:0.828508;stroke-dasharray:none;stroke-opacity:1"
+       x="102.41474"
+       y="183.73267"
+       id="text5028"><tspan
+         sodipodi:role="line"
+         id="tspan5026"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:46.3965px;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffaaaa;stroke:#f44336;stroke-width:0.828508;stroke-opacity:1"
+         x="102.41474"
+         y="183.73267">Ў</tspan></text>
+    <rect
+       style="fill:#ca4747;fill-opacity:0;stroke-width:0.332678"
+       id="rect1737"
+       width="65"
+       height="65"
+       x="82.633148"
+       y="134.16629" />
+  </g>
+</svg>
