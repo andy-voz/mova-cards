@@ -1,5 +1,7 @@
 # Мова: Карткі
 
+Belarusian | [English](README_en.md)
+
 <p align="center">
   <img src="https://github.com/andy-voz/mova-cards/assets/26454250/14c519b7-291e-449c-b17d-e21980f1713e" width="50%" height="50%"/>
   <a href="https://play.google.com/store/apps/details?id=com.skarynalabs.movacards"><img src="https://play.google.com/intl/en_us/badges/static/images/badges/be_badge_web_generic.png" alt="Google Play" width="50%" height="50%"/></a>
