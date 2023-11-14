@@ -29,8 +29,8 @@ for collection_desc in collection_list['collections']:
 
     img_dir = collection['imgDir']
 
-    for word_desc in collection['words'].values():
-        image_name = word_desc['en'] if word_desc.get('imgOverride') is None else word_desc['imgOverride']
+    for word_id in collection['words']:
+        image_name = word_id
 
         # Reading image from original file
         imageFile = os.path.join(originalsDir, img_dir, image_name + '.jpg')
