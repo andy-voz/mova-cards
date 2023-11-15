@@ -75,7 +75,7 @@ class WordsManager {
       messenger.clearSnackBars();
 
       if (currentWord != null) {
-        _savedWordsManager.addWord(currentWord!.word);
+        _savedWordsManager.addWord(currentWord!.by);
         if (_savedWordsManager.getWordStrings.length % 100 == 0 &&
             _prefs.getRateUsShowed() != true) {
           showRateAs();

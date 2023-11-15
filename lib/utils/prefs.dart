@@ -64,7 +64,7 @@ class Prefs {
   }
 
   void setCurrentWord(Word word) {
-    prefs.setString(currentWordKey, word.word);
+    prefs.setString(currentWordKey, word.by);
   }
 
   String? getNextWord() {
@@ -73,7 +73,7 @@ class Prefs {
 
   void setNextWord(Word? word) {
     if (word != null) {
-      prefs.setString(nextWordKey, word.word);
+      prefs.setString(nextWordKey, word.by);
     } else {
       prefs.remove(nextWordKey);
     }

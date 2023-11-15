@@ -12,7 +12,7 @@ class Collection {
       : name = json['name'],
         _backImg = json['backImg'],
         _imgDir = json['imgDir'],
-        words = (json['words'] as Map).map((wordName, data) =>
-            MapEntry<String, Word>(wordName,
-                Word.fromJson(wordName, json['name'], json['imgDir'], data)));
+        words = (json['words'] as Map).map((wordId, data) =>
+            MapEntry<String, Word>(wordId,
+                Word.fromJson(wordId, json['name'], json['imgDir'], data)));
 }

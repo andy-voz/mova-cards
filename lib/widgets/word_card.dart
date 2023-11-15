@@ -42,13 +42,13 @@ class WordCardContent extends StatelessWidget {
             child: FittedBox(
                 fit: BoxFit.contain,
                 child: Text(
-                  word != null ? word!.word : "",
+                  word != null ? word!.by : "",
                   softWrap: false,
                   style: GoogleFonts.comfortaa(fontWeight: FontWeight.bold),
                 ))),
         GestureDetector(
             onTap: () {
-              if (word != null) goToDefinition(word!.word);
+              if (word != null) goToDefinition(word!.by);
             },
             child: Stack(children: [
               SizedBox(
