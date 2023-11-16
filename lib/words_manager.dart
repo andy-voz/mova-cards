@@ -89,7 +89,7 @@ class WordsManager {
       messenger.clearSnackBars();
 
       if (currentWord != null) {
-        _savedWordsManager.addWord(currentWord!.by);
+        _savedWordsManager.addWord(currentWord!.id);
         if (_savedWordsManager.getWordIds.length % 100 == 0 &&
             _prefs.getRateUsShowed() != true) {
           showRateAs();

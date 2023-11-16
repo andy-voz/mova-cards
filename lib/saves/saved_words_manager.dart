@@ -12,6 +12,12 @@ import 'saved_word.dart';
 
 final log = Logger('SavedWordManager');
 
+/// If we need to reset users saves for any reason, just need to up this version.
+const int currentVersion = 2;
+
+const String versionKey = 'version';
+const String wordsKey = 'words';
+
 class SavedWordsManager {
   final Set<String> _wordIds = {};
   final LinkedHashSet<SavedWord> _words = LinkedHashSet();
@@ -29,8 +35,29 @@ class SavedWordsManager {
     if (_saveFile.existsSync()) {
       String content = _saveFile.readAsStringSync();
       try {
-        List<dynamic> dynamicWords = jsonDecode(content);
-        for (var word in dynamicWords) {
+        var saveData = jsonDecode(content);
+        if (saveData is Map)
+        {
+          // Now we can check the save version
+          int saveVersion = saveData['version'];
+          if (currentVersion > saveVersion)
+          {
+            log.warning('Wiping data. Old save has a lower version: $saveVersion Current: $currentVersion');
+            _wipeAll();
+            return;
+          }
+        }
+        else
+        {
+          // In old saves we used a List.
+          log.warning('Old save detected, wiping data.');
+          _wipeAll();
+          return;
+        }
+
+        List<dynamic> words = saveData['words'];
+
+        for (var word in words) {
           var savedWord = SavedWord.fromJson(word);
           _words.add(savedWord);
           _wordIds.add(savedWord.id);
@@ -56,13 +83,20 @@ class SavedWordsManager {
     _words.add(savedWord);
     _wordIds.add(id);
 
-    String serialized =
-        jsonEncode(_words.map((savedWord) => savedWord.toJson()).toList());
-    log.info('Saving: $serialized');
+    Map<String, dynamic> saveData = {
+      versionKey: currentVersion,
+      wordsKey: _words.map((savedWord) => savedWord.toJson()).toList()
+    };
+
+    String serialized = jsonEncode(saveData);
+    log.info('Saving: ${_saveFile.path} | $serialized');
 
     if (!_saveFile.existsSync()) {
       _saveFile.createSync();
     }
+
+    // TODO: It looks too heavy to rewrite the whole save when the user swipes a word.
+    // Require a better solution
     _saveFile.writeAsString(serialized);
   }
 

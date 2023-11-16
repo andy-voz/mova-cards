@@ -18,6 +18,12 @@ class SavedWordCard extends StatelessWidget {
   Widget build(BuildContext context) {
     Word? word = _manager.findWord(_savedWord.id);
 
+    // Unexpected behavior
+    if (word == null)
+    {
+      return const Card();
+    }
+
     return Card(
         child: Stack(children: [
       Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
@@ -26,7 +32,7 @@ class SavedWordCard extends StatelessWidget {
             child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
                 child: Image.asset(
-                    imgAssetsDir + word!.imgPath(),
+                    imgAssetsDir + word.imgPath(),
                     scale: 3))),
         Column(children: <Widget>[
           Container(
