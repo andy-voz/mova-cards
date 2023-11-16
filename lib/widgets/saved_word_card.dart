@@ -6,6 +6,7 @@ import 'package:mova_cards/words_manager.dart';
 
 import '../saves/saved_word.dart';
 import '../utils/utils.dart';
+import '../word.dart';
 
 class SavedWordCard extends StatelessWidget {
   final SavedWord _savedWord;
@@ -15,6 +16,8 @@ class SavedWordCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Word? word = _manager.findWord(_savedWord.id);
+
     return Card(
         child: Stack(children: [
       Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
@@ -23,8 +26,7 @@ class SavedWordCard extends StatelessWidget {
             child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
                 child: Image.asset(
-                    imgAssetsDir +
-                        _manager.findWord(_savedWord.word)!.imgPath(),
+                    imgAssetsDir + word!.imgPath(),
                     scale: 3))),
         Column(children: <Widget>[
           Container(
@@ -33,7 +35,7 @@ class SavedWordCard extends StatelessWidget {
               child: FittedBox(
                   alignment: Alignment.bottomLeft,
                   fit: BoxFit.scaleDown,
-                  child: Text(_savedWord.word,
+                  child: Text(word.by,
                       softWrap: false,
                       style: GoogleFonts.comfortaa(
                           fontWeight: FontWeight.bold, fontSize: 24)))),
@@ -44,7 +46,7 @@ class SavedWordCard extends StatelessWidget {
                   alignment: Alignment.bottomLeft,
                   fit: BoxFit.scaleDown,
                   child: Text(
-                      'Катэгорыя:\n${_manager.findWord(_savedWord.word)!.collection}',
+                      'Катэгорыя:\n${word.collection}',
                       softWrap: false,
                       style: GoogleFonts.comfortaa(fontSize: 14)))),
         ])
@@ -54,7 +56,7 @@ class SavedWordCard extends StatelessWidget {
         height: 120.w,
         alignment: Alignment.centerRight,
         child: IconButton.filledTonal(
-            onPressed: () => {goToDefinition(_savedWord.word)},
+            onPressed: () => {goToDefinition(word.by)},
             icon: const Icon(FontAwesomeIcons.question, size: 30)),
       )
     ]));

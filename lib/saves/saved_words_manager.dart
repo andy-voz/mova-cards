@@ -13,7 +13,7 @@ import 'saved_word.dart';
 final log = Logger('SavedWordManager');
 
 class SavedWordsManager {
-  final Set<String> _wordStrings = {};
+  final Set<String> _wordIds = {};
   final LinkedHashSet<SavedWord> _words = LinkedHashSet();
   final WordsManager _manager;
   final Function _wipeAllCallback;
@@ -33,7 +33,7 @@ class SavedWordsManager {
         for (var word in dynamicWords) {
           var savedWord = SavedWord.fromJson(word);
           _words.add(savedWord);
-          _wordStrings.add(savedWord.word);
+          _wordIds.add(savedWord.id);
         }
 
         log.info('Loaded from file: $_words');
@@ -46,15 +46,15 @@ class SavedWordsManager {
     }
   }
 
-  void addWord(String word) {
+  void addWord(String id) {
     var dateTime = DateTime.now();
-    var savedWord = SavedWord(word, dateTime);
+    var savedWord = SavedWord(id, dateTime);
     if (_words.contains(savedWord)) {
       _words.remove(savedWord);
     }
 
     _words.add(savedWord);
-    _wordStrings.add(word);
+    _wordIds.add(id);
 
     String serialized =
         jsonEncode(_words.map((savedWord) => savedWord.toJson()).toList());
@@ -113,7 +113,7 @@ class SavedWordsManager {
   }
 
   void _wipeAll() {
-    _wordStrings.clear();
+    _wordIds.clear();
     _words.clear();
 
     _saveFile.deleteSync();
@@ -121,5 +121,5 @@ class SavedWordsManager {
     _wipeAllCallback();
   }
 
-  Set<String> get getWordStrings => _wordStrings;
+  Set<String> get getWordIds => _wordIds;
 }
