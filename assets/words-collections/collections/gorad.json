@@ -24,7 +24,7 @@
             "en": "Square",
             "ru": "Площадь"
         },
-        "House": {
+        "Dom": {
             "by": "До́м",
             "en": "House",
             "ru": "Дом"
@@ -34,7 +34,7 @@
             "en": "Building",
             "ru": "Строение"
         },
-        "Hulk (high building)": {
+        "Hulk": {
             "by": "Гма́х",
             "en": "Hulk (high building)",
             "ru": "Громадина (высокое строение)"
