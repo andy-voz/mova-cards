@@ -17,9 +17,20 @@ class WordsManager {
   final BuildContext _context;
   final Prefs _prefs;
   final Function _updateUICallback;
+
+  /// All words collection where
+  /// key - word ID
+  /// value - word data.
   final Map<String, Word> _allWords = {};
+
+  /// List of all word collections
   final List<Collection> _collections = [];
+
+  /// The user can turn on/off some collections, so we'll skip them while picking a new word.
   final Map<String, bool> _collectionsState = {};
+
+  /// When the user is editing active collections, we put all changes to this buffet and apply them
+  /// only when the user explicitly clicks "OK".
   final Map<String, bool> _bufferCollectionsState = {};
   final InAppReview inAppReview = InAppReview.instance;
 
@@ -31,8 +42,11 @@ class WordsManager {
   Word? _currentWord;
   Word? _nextWord;
 
-  List<String> _restWords = [];
-  Set<String> _activeWords = {};
+  /// Ids of the words we've never shown to the user.
+  List<String> _restWordIds = [];
+
+  /// Ids of all words from active collection regardless of were they shown to the user before or not.
+  Set<String> _activeWordIds = {};
 
   WordsManager(this._context, this._prefs, this._updateUICallback);
 
@@ -63,7 +77,7 @@ class WordsManager {
       _nextWord ??= _getNextWord();
       _currentWord = nextWord;
 
-      _restWords.removeLast();
+      _restWordIds.removeLast();
 
       _nextWord = _getNextWord();
 
@@ -75,8 +89,8 @@ class WordsManager {
       messenger.clearSnackBars();
 
       if (currentWord != null) {
-        _savedWordsManager.addWord(currentWord!.word);
-        if (_savedWordsManager.getWordStrings.length % 100 == 0 &&
+        _savedWordsManager.addWord(currentWord!.id);
+        if (_savedWordsManager.getWordIds.length % 100 == 0 &&
             _prefs.getRateUsShowed() != true) {
           showRateAs();
           _prefs.setRateUsShowed();
@@ -160,13 +174,13 @@ class WordsManager {
   Word? get currentWord => _currentWord;
   Word? get nextWord => _nextWord;
   int get allWordsCount => _allWords.length;
-  int get activeWordsCount => _activeWords.length;
-  int get restWordsCount => _restWords.length;
+  int get activeWordsCount => _activeWordIds.length;
+  int get restWordsCount => _restWordIds.length;
 
   Word? _getNextWord() {
-    if (_restWords.isEmpty) return null;
+    if (_restWordIds.isEmpty) return null;
 
-    return _allWords[_restWords.last];
+    return _allWords[_restWordIds.last];
   }
 
   Future _loadCollections() async {
@@ -196,14 +210,14 @@ class WordsManager {
   }
 
   void _initActiveCollections(bool goToNext) {
-    Set<String> savedWords = _savedWordsManager.getWordStrings;
-    _activeWords = activeCollections()
+    Set<String> savedWordIds = _savedWordsManager.getWordIds;
+    _activeWordIds = activeCollections()
         .expand((collection) => collection.words.keys)
         .toSet();
 
-    _restWords =
-        _activeWords.where((word) => !savedWords.contains(word)).toList();
-    _restWords.shuffle();
+    _restWordIds =
+        _activeWordIds.where((word) => !savedWordIds.contains(word)).toList();
+    _restWordIds.shuffle();
 
     if (goToNext) {
       _nextWord = null;

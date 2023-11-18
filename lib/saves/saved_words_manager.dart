@@ -12,8 +12,14 @@ import 'saved_word.dart';
 
 final log = Logger('SavedWordManager');
 
+/// If we need to reset users saves for any reason, just need to up this version.
+const int currentVersion = 2;
+
+const String versionKey = 'version';
+const String wordsKey = 'words';
+
 class SavedWordsManager {
-  final Set<String> _wordStrings = {};
+  final Set<String> _wordIds = {};
   final LinkedHashSet<SavedWord> _words = LinkedHashSet();
   final WordsManager _manager;
   final Function _wipeAllCallback;
@@ -29,11 +35,32 @@ class SavedWordsManager {
     if (_saveFile.existsSync()) {
       String content = _saveFile.readAsStringSync();
       try {
-        List<dynamic> dynamicWords = jsonDecode(content);
-        for (var word in dynamicWords) {
+        var saveData = jsonDecode(content);
+        if (saveData is Map)
+        {
+          // Now we can check the save version
+          int saveVersion = saveData['version'];
+          if (currentVersion > saveVersion)
+          {
+            log.warning('Wiping data. Old save has a lower version: $saveVersion Current: $currentVersion');
+            _wipeAll();
+            return;
+          }
+        }
+        else
+        {
+          // In old saves we used a List.
+          log.warning('Old save detected, wiping data.');
+          _wipeAll();
+          return;
+        }
+
+        List<dynamic> words = saveData['words'];
+
+        for (var word in words) {
           var savedWord = SavedWord.fromJson(word);
           _words.add(savedWord);
-          _wordStrings.add(savedWord.word);
+          _wordIds.add(savedWord.id);
         }
 
         log.info('Loaded from file: $_words');
@@ -46,23 +73,30 @@ class SavedWordsManager {
     }
   }
 
-  void addWord(String word) {
+  void addWord(String id) {
     var dateTime = DateTime.now();
-    var savedWord = SavedWord(word, dateTime);
+    var savedWord = SavedWord(id, dateTime);
     if (_words.contains(savedWord)) {
       _words.remove(savedWord);
     }
 
     _words.add(savedWord);
-    _wordStrings.add(word);
+    _wordIds.add(id);
 
-    String serialized =
-        jsonEncode(_words.map((savedWord) => savedWord.toJson()).toList());
-    log.info('Saving: $serialized');
+    Map<String, dynamic> saveData = {
+      versionKey: currentVersion,
+      wordsKey: _words.map((savedWord) => savedWord.toJson()).toList()
+    };
+
+    String serialized = jsonEncode(saveData);
+    log.info('Saving: ${_saveFile.path} | $serialized');
 
     if (!_saveFile.existsSync()) {
       _saveFile.createSync();
     }
+
+    // TODO: It looks too heavy to rewrite the whole save when the user swipes a word.
+    // Require a better solution
     _saveFile.writeAsString(serialized);
   }
 
@@ -113,7 +147,7 @@ class SavedWordsManager {
   }
 
   void _wipeAll() {
-    _wordStrings.clear();
+    _wordIds.clear();
     _words.clear();
 
     _saveFile.deleteSync();
@@ -121,5 +155,5 @@ class SavedWordsManager {
     _wipeAllCallback();
   }
 
-  Set<String> get getWordStrings => _wordStrings;
+  Set<String> get getWordIds => _wordIds;
 }

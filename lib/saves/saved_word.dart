@@ -1,25 +1,25 @@
 class SavedWord {
-  String word;
+  String id;
   DateTime timeOfAccess;
 
-  SavedWord(this.word, this.timeOfAccess);
+  SavedWord(this.id, this.timeOfAccess);
 
   SavedWord.fromJson(Map<String, dynamic> json)
-      : word = json['word'],
+      : id = json['id'],
         timeOfAccess =
             DateTime.fromMillisecondsSinceEpoch(json['timeOfAccess']);
 
   Map<String, dynamic> toJson() =>
-      {'word': word, 'timeOfAccess': timeOfAccess.millisecondsSinceEpoch};
+      {'id': id, 'timeOfAccess': timeOfAccess.millisecondsSinceEpoch};
 
   @override
   String toString() {
-    return word;
+    return id;
   }
 
   @override
-  bool operator ==(other) => other is SavedWord && other.word == word;
+  bool operator ==(other) => other is SavedWord && other.id == id;
 
   @override
-  int get hashCode => word.hashCode;
+  int get hashCode => id.hashCode;
 }

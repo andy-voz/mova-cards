@@ -24,6 +24,6 @@ with open(out_filename, 'a', encoding='utf-8') as out_file:
 
         out_file.write('\n{} Count: {}\n'.format(collection['name'], len(words)))
 
-        for word in words:
-            out_file.write('{}\n'.format(word))
-
+        for key, value in words.items():
+            print('Word: {}'.format(key))
+            out_file.write('{}\n'.format(value['by']))
