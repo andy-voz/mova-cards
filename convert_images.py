@@ -7,7 +7,7 @@ from PIL import Image
 originalsDir = 'assets/images/words/originals/'
 compressedDir = 'assets/images/words/compressed/'
 
-if (os.path.exists(compressedDir)):
+if os.path.exists(compressedDir):
     shutil.rmtree(compressedDir)
 
 os.mkdir(compressedDir)
@@ -47,11 +47,11 @@ for collection_desc in collection_list['collections']:
         # Cropping image to have symmetric width, height.
         width, height = image.size
         diff = 0
-        if (width > height):
+        if width > height:
             diff = width - height
             image = image.crop((diff / 2, 0, width - diff / 2, height))
             image.load
-        elif (height > width):
+        elif height > width:
             diff = height - width
             image = image.crop((0, diff / 2, width, height - diff / 2))
             image.load
@@ -63,7 +63,7 @@ for collection_desc in collection_list['collections']:
 
         # Saving image with compression.
         new_dir = os.path.join(compressedDir, img_dir)
-        if (not os.path.exists(new_dir)):
+        if not os.path.exists(new_dir):
             os.mkdir(new_dir)
 
         new_path = os.path.join(new_dir, image_name + '.webp')

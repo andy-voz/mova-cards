@@ -45,7 +45,7 @@ dependencies:
   flutter_email_sender: ^6.0.0
   tutorial_coach_mark: ^1.2.9
   in_app_review: ^2.0.6
-  flutter_screenutil: ^5.8.4
+  flutter_screenutil: ^5.9.0
   device_preview: ^1.1.0
 
   # The following adds the Cupertino Icons font to your application.

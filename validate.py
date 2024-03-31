@@ -10,21 +10,21 @@ images_path = 'assets/images/words/compressed'
 
 
 def check_cyrillic(text):
-    if (bool(re.search('[а-яА-Я]', text))):
+    if bool(re.search('[а-яА-Я]', text)):
         global warningsCount
         warningsCount += 1
         print('WARNING: {} contains cyrillic!'.format(text))
 
 
 def check_latin(text):
-    if (bool(re.search('[a-zA-Z]', text))):
+    if bool(re.search('[a-zA-Z]', text)):
         global warningsCount
         warningsCount += 1
         print('WARNING: {} contains latin!'.format(text))
 
 
 def check_duplicate_by(text):
-    if (text in words_set):
+    if text in words_set:
         global warningsCount
         warningsCount += 1
         print('WARNING: duplicate {}'.format(text))
@@ -33,7 +33,7 @@ def check_duplicate_by(text):
 
 
 def check_duplicate_ids(text):
-    if (text in ids_set):
+    if text in ids_set:
         global warningsCount
         warningsCount += 1
         print('WARNING: duplicate ID {}'.format(text))
@@ -41,12 +41,13 @@ def check_duplicate_ids(text):
         ids_set.add(text)
 
 
-def check_image_exists(collection, filename):
-    joined_path = os.path.join(images_path, collection, filename + '.webp')
-    if (not os.path.exists(joined_path)):
+def check_image_exists(l_collection, filename):
+    joined_path = os.path.join(images_path, l_collection, filename + '.webp')
+    if not os.path.exists(joined_path):
         global warningsCount
         warningsCount += 1
         print('WARNING: image does not exist {}'.format(joined_path))
+
 
 with open('assets/words-collections/base.json', 'r', encoding='utf8') as content_file:
     content = content_file.read()
