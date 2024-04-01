@@ -1,14 +1,14 @@
 import json
 import os
 
-out_filename = 'flat_list.txt'
+out_filename = '../flat_list.txt'
 
-with open('assets/words-collections/base.json', 'r', encoding='utf8') as content_file:
+with open('../assets/words-collections/base.json', 'r', encoding='utf8') as content_file:
     content = content_file.read()
 
 collection_list = json.loads(content)
 
-if (os.path.exists(out_filename)):
+if os.path.exists(out_filename):
     os.remove(out_filename)
 
 with open(out_filename, 'a', encoding='utf-8') as out_file:

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:logging/logging.dart';
@@ -186,16 +187,18 @@ class WordsManager {
   Future _loadCollections() async {
     _collections.clear();
 
+    Stopwatch? watch;
+    if (kDebugMode)
+    {
+      watch = Stopwatch();
+      watch.start();
+    }
     var assets = DefaultAssetBundle.of(_context);
-    String data = await assets.loadString('assets/words-collections/base.json');
+    String data = await assets.loadString('assets/cooked/combined.json');
     List<dynamic> collections = await jsonDecode(data)['collections'];
 
-    for (var collectionInfo in collections) {
-      String? collectionPath = collectionInfo['path'];
-      if (collectionPath == null) continue;
-
-      String collectionData = await assets.loadString(collectionPath);
-      var collection = Collection.fromJson(jsonDecode(collectionData));
+    for (var collectionData in collections) {
+      var collection = Collection.fromJson(collectionData);
       _collections.add(collection);
 
       _collectionsState[collection.name] =
@@ -203,10 +206,16 @@ class WordsManager {
 
       _allWords.addAll(collection.words);
 
-      log.info('Loaded: $collectionPath');
+      log.info('Loaded: ${collection.name}');
     }
 
     _initActiveCollections(false);
+
+    if (kDebugMode)
+    {
+      watch?.stop();
+      log.info('Elapsed: ${watch?.elapsedMilliseconds}');
+    }
   }
 
   void _initActiveCollections(bool goToNext) {
