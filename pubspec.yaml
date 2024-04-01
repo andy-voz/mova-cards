@@ -76,3 +76,13 @@ flutter:
 
   assets:
     - 'assets/cooked/'
+    - 'assets/cooked/images/zyvely/'
+    - 'assets/cooked/images/kvatera/'
+    - 'assets/cooked/images/transpart/'
+    - 'assets/cooked/images/gorad/'
+    - 'assets/cooked/images/chastki_tsela/'
+    - 'assets/cooked/images/krama/'
+    - 'assets/cooked/images/adzenne/'
+    - 'assets/cooked/images/spadchyna/'
+    - 'assets/cooked/images/kaviarnia/'
+    - 'assets/cooked/images/kamputar/'

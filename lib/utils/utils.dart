@@ -1,6 +1,6 @@
 import 'package:url_launcher/url_launcher.dart';
 
-const String imgAssetsDir = 'assets/cooked/images';
+const String imgAssetsDir = 'assets/cooked/images/';
 
 void goToDefinition(String word) async {
   word = word.replaceAll('\u0301', '');
