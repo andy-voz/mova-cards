@@ -1,4 +1,3 @@
-import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:logging/logging.dart';
@@ -16,12 +15,7 @@ void main() {
     print('${record.level.name}: ${record.time}: ${record.message}');
   });
 
-  runApp(
-    DevicePreview(
-      enabled: !kReleaseMode && preview,
-      builder: (context) => const MyApp(), // Wrap your app
-    ),
-  );
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -54,8 +48,6 @@ class MyAppState extends State<MyApp> {
         splitScreenMode: true,
         builder: (context, child) {
           return MaterialApp(
-            locale: DevicePreview.locale(context),
-            builder: DevicePreview.appBuilder,
             title: 'Мова: Карткі',
             theme: ThemeData(
               colorScheme: ColorScheme.fromSeed(

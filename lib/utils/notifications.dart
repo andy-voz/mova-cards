@@ -20,35 +20,40 @@ class NotificationManager {
     flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
-        ?.requestPermission();
+        ?.requestExactAlarmsPermission();
     return flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
-  Future<void> scheduleNotification(DateTime? time) async {
-    flutterLocalNotificationsPlugin.cancelAll();
-    if (time == null) return;
+  Future<void> scheduleDailyNotifications(DateTime? time) async {
+    bool? canNotify = await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+        ?.canScheduleExactNotifications();
 
-    var scheduledNotificationTZDateTime = tz.TZDateTime.from(time, tz.local);
+    if (canNotify != null && canNotify)
+    {
+      flutterLocalNotificationsPlugin.cancelAll();
+      if (time == null) return;
 
-    // We schedule daily notifications for the whole week.
-    for (int i = 0; i < 7; ++i) {
-      await flutterLocalNotificationsPlugin.zonedSchedule(
-          0,
-          'Мова: Карткі',
-          'Запрашаю прагледзіць новае слова!',
-          scheduledNotificationTZDateTime,
-          const NotificationDetails(
-              android: AndroidNotificationDetails('MovaCardsChannelID', 'Daily',
-                  channelDescription: 'Daily word update notifications')),
-          androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-          uiLocalNotificationDateInterpretation:
-              UILocalNotificationDateInterpretation.absoluteTime);
+      var scheduledNotificationTZDateTime = tz.TZDateTime.from(time, tz.local);
 
-      log.info(
-          'A Notification is scheduled for $scheduledNotificationTZDateTime');
+      // We schedule daily notifications for the whole week.
+      for (int i = 0; i < 7; ++i) {
+        await flutterLocalNotificationsPlugin.zonedSchedule(
+            0,
+            'Мова: Карткі',
+            'Запрашаю прагледзіць новае слова!',
+            scheduledNotificationTZDateTime,
+            const NotificationDetails(
+                android: AndroidNotificationDetails('MovaCardsChannelID', 'Daily',
+                    channelDescription: 'Daily word update notifications')),
+            androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+            uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime);
 
-      if (i > 0) {
-        scheduledNotificationTZDateTime.add(const Duration(days: 1));
+        log.info(
+            'A Notification is scheduled for $scheduledNotificationTZDateTime');
+
+        scheduledNotificationTZDateTime = scheduledNotificationTZDateTime.add(const Duration(days: 1));
       }
     }
   }

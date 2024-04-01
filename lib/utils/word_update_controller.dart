@@ -141,6 +141,6 @@ class WordUpdateController {
 
     log.info('Scheduled next update at $_nextUpdateDateTime');
 
-    _notificationManager.scheduleNotification(_nextUpdateDateTime);
+    _notificationManager.scheduleDailyNotifications(_nextUpdateDateTime);
   }
 }

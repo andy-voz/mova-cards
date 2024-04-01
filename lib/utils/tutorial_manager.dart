@@ -29,7 +29,7 @@ class TutorialManager {
       opacityShadow: 0.5,
       imageFilter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
       onFinish: () => _prefs.setTutorialPassed(),
-      onSkip: () => _prefs.setTutorialPassed()
+      onSkip: () { _prefs.setTutorialPassed(); return true; },
     );
   }
 
