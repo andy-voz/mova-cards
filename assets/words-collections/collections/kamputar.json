@@ -239,11 +239,6 @@
             "en": "Browser",
             "ru": "Браузер"
         },
-        "Search engine": {
-            "by": "По́шук",
-            "en": "Search",
-            "ru": "Поиск"
-        },
         "Neural network": {
             "by": "Нейро́навая се́тка",
             "en": "Neural network",
@@ -253,6 +248,11 @@
             "by": "Памо́чнік",
             "en": "Assistant",
             "ru": "Помощник"
+        },
+        "Robot": {
+            "by": "Ро́бат",
+            "en": "Robot",
+            "ru": "Робот"
         }
     }
 }
