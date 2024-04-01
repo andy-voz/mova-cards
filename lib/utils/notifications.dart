@@ -18,16 +18,15 @@ class NotificationManager {
         InitializationSettings(android: initializationSettingsAndroid);
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
     flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
-        ?.requestExactAlarmsPermission();
+        .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+        ?.requestNotificationsPermission();
     return flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
   Future<void> scheduleDailyNotifications(DateTime? time) async {
     bool? canNotify = await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
-        ?.canScheduleExactNotifications();
+        ?.areNotificationsEnabled();
 
     if (canNotify != null && canNotify)
     {
@@ -46,9 +45,8 @@ class NotificationManager {
             const NotificationDetails(
                 android: AndroidNotificationDetails('MovaCardsChannelID', 'Daily',
                     channelDescription: 'Daily word update notifications')),
-            androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-            uiLocalNotificationDateInterpretation:
-            UILocalNotificationDateInterpretation.absoluteTime);
+            androidScheduleMode: AndroidScheduleMode.inexact,
+            uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime);
 
         log.info(
             'A Notification is scheduled for $scheduledNotificationTZDateTime');
