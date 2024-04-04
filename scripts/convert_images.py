@@ -4,13 +4,15 @@ import shutil
 
 from PIL import Image
 
+os.chdir(os.getcwd() + '\\..')
+
 originalsDir = 'assets/images/words/originals/'
-compressedDir = 'assets/images/words/compressed/'
+compressedDir = 'assets/cooked/images/'
 
 if os.path.exists(compressedDir):
     shutil.rmtree(compressedDir)
 
-os.mkdir(compressedDir)
+os.makedirs(compressedDir)
 
 with open('assets/words-collections/base.json', 'r', encoding='utf8') as content_file:
     content = content_file.read()
@@ -35,10 +37,10 @@ for collection_desc in collection_list['collections']:
         # Reading image from original file
         imageFile = os.path.join(originalsDir, img_dir, image_name + '.jpg')
 
-        if (not os.path.exists(imageFile)):
+        if not os.path.exists(imageFile):
             imageFile = os.path.join(originalsDir, img_dir, image_name + '.png')
 
-        if (not os.path.exists(imageFile)):
+        if not os.path.exists(imageFile):
             print('WARN: File for {} doesn\'t exist!'.format(image_name))
             continue
 
@@ -50,11 +52,11 @@ for collection_desc in collection_list['collections']:
         if width > height:
             diff = width - height
             image = image.crop((diff / 2, 0, width - diff / 2, height))
-            image.load
+            image.load()
         elif height > width:
             diff = height - width
             image = image.crop((0, diff / 2, width, height - diff / 2))
-            image.load
+            image.load()
 
         # Now image is a square 300x300.
 

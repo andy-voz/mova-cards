@@ -2,11 +2,13 @@ import re
 import json
 import os
 
+os.chdir(os.getcwd() + '\\..')
+
 warningsCount = 0
 words_set = set()
 ids_set = set()
 
-images_path = 'assets/images/words/compressed'
+images_path = 'assets/cooked/images'
 
 
 def check_cyrillic(text):

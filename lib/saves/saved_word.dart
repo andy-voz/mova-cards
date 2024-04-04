@@ -2,15 +2,16 @@ class SavedWord {
   String id;
   DateTime timeOfAccess;
 
+  static const String separator = ',';
+
   SavedWord(this.id, this.timeOfAccess);
 
-  SavedWord.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
+  SavedWord.read(List<String> line)
+      : id = line[0],
         timeOfAccess =
-            DateTime.fromMillisecondsSinceEpoch(json['timeOfAccess']);
+            DateTime.fromMillisecondsSinceEpoch(int.parse(line[1]));
 
-  Map<String, dynamic> toJson() =>
-      {'id': id, 'timeOfAccess': timeOfAccess.millisecondsSinceEpoch};
+  String write() => '$id$separator${timeOfAccess.millisecondsSinceEpoch}';
 
   @override
   String toString() {

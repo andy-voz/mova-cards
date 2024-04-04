@@ -1,13 +1,9 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../word.dart';
-
 class Prefs {
   static const String updateHourKey = 'updateHour';
   static const String updateMinuteKey = 'updateMinute';
   static const String lastUpdateTimeKey = 'lastUpdateTime';
-  static const String currentWordKey = 'currentWord';
-  static const String nextWordKey = 'nextWord';
   static const String tutorialKey = 'tutorial';
   static const String rateUsKey = 'rateUsShowed';
 
@@ -31,7 +27,7 @@ class Prefs {
     return prefs.getBool(tutorialKey);
   }
 
-  void setTutorialPassed() {
+  void setTutorialPassed() async {
     prefs.setBool(tutorialKey, true);
   }
 
@@ -57,26 +53,6 @@ class Prefs {
 
   void setLastUpdateTime(int time) {
     prefs.setInt(lastUpdateTimeKey, time);
-  }
-
-  String? getCurrentWord() {
-    return prefs.getString(currentWordKey);
-  }
-
-  void setCurrentWord(Word word) {
-    prefs.setString(currentWordKey, word.by);
-  }
-
-  String? getNextWord() {
-    return prefs.getString(nextWordKey);
-  }
-
-  void setNextWord(Word? word) {
-    if (word != null) {
-      prefs.setString(nextWordKey, word.by);
-    } else {
-      prefs.remove(nextWordKey);
-    }
   }
 
   bool getCollectionState(String collectionName) {

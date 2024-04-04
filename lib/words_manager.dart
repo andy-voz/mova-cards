@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:logging/logging.dart';
@@ -37,6 +38,7 @@ class WordsManager {
   late WordUpdateController _wordUpdateController;
 
   late SavedWordsManager _savedWordsManager;
+
   get savedWordsManager => _savedWordsManager;
 
   Word? _currentWord;
@@ -80,9 +82,6 @@ class WordsManager {
       _restWordIds.removeLast();
 
       _nextWord = _getNextWord();
-
-      _prefs.setCurrentWord(_currentWord!);
-      _prefs.setNextWord(_nextWord);
       _prefs.setLastUpdateTime(DateTime.now().millisecondsSinceEpoch);
 
       var messenger = ScaffoldMessenger.of(_context);
@@ -90,7 +89,7 @@ class WordsManager {
 
       if (currentWord != null) {
         _savedWordsManager.addWord(currentWord!.id);
-        if (_savedWordsManager.getWordIds.length % 100 == 0 &&
+        if (_savedWordsManager.getWordIds.length % 50 == 0 &&
             _prefs.getRateUsShowed() != true) {
           showRateAs();
           _prefs.setRateUsShowed();
@@ -172,9 +171,13 @@ class WordsManager {
   List<Collection> get collections => _collections;
 
   Word? get currentWord => _currentWord;
+
   Word? get nextWord => _nextWord;
+
   int get allWordsCount => _allWords.length;
+
   int get activeWordsCount => _activeWordIds.length;
+
   int get restWordsCount => _restWordIds.length;
 
   Word? _getNextWord() {
@@ -186,16 +189,17 @@ class WordsManager {
   Future _loadCollections() async {
     _collections.clear();
 
+    Stopwatch? watch;
+    if (kDebugMode) {
+      watch = Stopwatch();
+      watch.start();
+    }
     var assets = DefaultAssetBundle.of(_context);
-    String data = await assets.loadString('assets/words-collections/base.json');
+    String data = await assets.loadString('assets/cooked/combined.json');
     List<dynamic> collections = await jsonDecode(data)['collections'];
 
-    for (var collectionInfo in collections) {
-      String? collectionPath = collectionInfo['path'];
-      if (collectionPath == null) continue;
-
-      String collectionData = await assets.loadString(collectionPath);
-      var collection = Collection.fromJson(jsonDecode(collectionData));
+    for (var collectionData in collections) {
+      var collection = Collection.fromJson(collectionData);
       _collections.add(collection);
 
       _collectionsState[collection.name] =
@@ -203,10 +207,15 @@ class WordsManager {
 
       _allWords.addAll(collection.words);
 
-      log.info('Loaded: $collectionPath');
+      log.info('Loaded: ${collection.name}');
     }
 
     _initActiveCollections(false);
+
+    if (kDebugMode) {
+      watch?.stop();
+      log.info('Elapsed: ${watch?.elapsedMilliseconds}');
+    }
   }
 
   void _initActiveCollections(bool goToNext) {
@@ -227,16 +236,13 @@ class WordsManager {
 
   void _generate() async {
     bool needUpdate = true;
-    if (_wordUpdateController.alreadyUpdated()) {
-      String? savedCurrentWord = _prefs.getCurrentWord();
-      String? savedNextWord = _prefs.getNextWord();
+    if (_wordUpdateController.alreadyUpdated() || restWordsCount <= 0) {
+      String? savedCurrentWord = _savedWordsManager.getLastSavedWord;
       if (savedCurrentWord != null) {
         _currentWord = _allWords[savedCurrentWord];
       }
 
-      if (savedNextWord != null) {
-        _nextWord = _allWords[savedNextWord];
-      }
+      _nextWord = _getNextWord();
 
       needUpdate = _currentWord == null;
       if (!needUpdate) {
