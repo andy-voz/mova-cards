@@ -22,6 +22,8 @@ class SavedWordsManager {
   final WordsManager _manager;
   final Function _wipeAllCallback;
 
+  String? _lastSavedWordId;
+
   late File _saveFile;
 
   SavedWordsManager(this._manager, this._wipeAllCallback);
@@ -48,6 +50,8 @@ class SavedWordsManager {
 
           _words.add(savedWord);
           _wordIds.add(savedWord.id);
+
+          _lastSavedWordId = savedWord.id;
         } catch (e) {
           log.shout('Failed to read a saved word!', e);
           continue;
@@ -135,4 +139,6 @@ class SavedWordsManager {
   }
 
   Set<String> get getWordIds => _wordIds;
+
+  String? get getLastSavedWord => _lastSavedWordId;
 }
