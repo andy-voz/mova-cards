@@ -236,7 +236,7 @@ class WordsManager {
 
   void _generate() async {
     bool needUpdate = true;
-    if (_wordUpdateController.alreadyUpdated()) {
+    if (_wordUpdateController.alreadyUpdated() || restWordsCount <= 0) {
       String? savedCurrentWord = _prefs.getCurrentWord();
       String? savedNextWord = _prefs.getNextWord();
       if (savedCurrentWord != null) {

@@ -1,5 +1,4 @@
 import 'dart:collection';
-import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -13,10 +12,9 @@ import 'saved_word.dart';
 final log = Logger('SavedWordManager');
 
 /// If we need to reset users saves for any reason, just need to up this version.
-const int currentVersion = 2;
+const int currentVersion = 3;
 
-const String versionKey = 'version';
-const String wordsKey = 'words';
+const savesFileName = 'savedData.txt';
 
 class SavedWordsManager {
   final Set<String> _wordIds = {};
@@ -30,46 +28,33 @@ class SavedWordsManager {
 
   void init() async {
     var supportDir = await getApplicationDocumentsDirectory();
-    _saveFile = File('${supportDir.path}/savedData.json');
+    _saveFile = File('${supportDir.path}/$savesFileName');
 
     if (_saveFile.existsSync()) {
       String content = _saveFile.readAsStringSync();
-      try {
-        var saveData = jsonDecode(content);
-        if (saveData is Map)
-        {
-          // Now we can check the save version
-          int saveVersion = saveData['version'];
-          if (currentVersion > saveVersion)
-          {
-            log.warning('Wiping data. Old save has a lower version: $saveVersion Current: $currentVersion');
-            _wipeAll();
-            return;
-          }
-        }
-        else
-        {
-          // In old saves we used a List.
-          log.warning('Old save detected, wiping data.');
-          _wipeAll();
-          return;
-        }
+      List<String> lines = content.split('\n');
+      String version = lines[0];
+      int? savedVersion = int.tryParse(version);
+      if (savedVersion == null || savedVersion < currentVersion) {
+        log.warning(
+            'Wiping data. Old save has a lower version or incorrect format: $savedVersion Current: $currentVersion');
+        _wipeAll();
+        return;
+      }
 
-        List<dynamic> words = saveData['words'];
+      for (int i = 1; i < lines.length; ++i) {
+        try {
+          var savedWord = SavedWord.read(lines[i].split(SavedWord.separator));
 
-        for (var word in words) {
-          var savedWord = SavedWord.fromJson(word);
           _words.add(savedWord);
           _wordIds.add(savedWord.id);
+        } catch (e) {
+          log.shout('Failed to read a saved word!', e);
+          continue;
         }
-
-        log.info('Loaded from file: $_words');
-      } catch (e) {
-        log.shout(e);
-        _saveFile.deleteSync();
       }
-    } else {
-      log.info('Save file doesn\'t exist');
+
+      log.info('Loaded from file: $_words');
     }
   }
 
@@ -83,21 +68,16 @@ class SavedWordsManager {
     _words.add(savedWord);
     _wordIds.add(id);
 
-    Map<String, dynamic> saveData = {
-      versionKey: currentVersion,
-      wordsKey: _words.map((savedWord) => savedWord.toJson()).toList()
-    };
-
-    String serialized = jsonEncode(saveData);
-    log.info('Saving: ${_saveFile.path} | $serialized');
+    String line = savedWord.write();
+    log.info('Saving: $line');
 
     if (!_saveFile.existsSync()) {
       _saveFile.createSync();
+      _saveFile.writeAsStringSync('$currentVersion\n');
     }
 
-    // TODO: It looks too heavy to rewrite the whole save when the user swipes a word.
-    // Require a better solution
-    _saveFile.writeAsString(serialized);
+    // Appending only the word itself, so the write operation is expected to be pretty fast.
+    _saveFile.writeAsStringSync('$line\n', mode: FileMode.append);
   }
 
   List<Widget> getWords() {
@@ -108,8 +88,7 @@ class SavedWordsManager {
         .toList();
   }
 
-  void wipeAllConfirmation(BuildContext context,
-      {Function? updateUICallback}) {
+  void wipeAllConfirmation(BuildContext context, {Function? updateUICallback}) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
