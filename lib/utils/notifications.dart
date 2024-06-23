@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:logging/logging.dart';
 
@@ -9,7 +11,11 @@ final log = Logger('Notifications');
 class NotificationManager {
   late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
-  Future<bool?> init() {
+  Future<bool?> init() async {
+    if (!Platform.isAndroid) {
+      return false;
+    }
+
     tz.initializeTimeZones();
 
     var initializationSettingsAndroid =
@@ -17,14 +23,19 @@ class NotificationManager {
     var initializationSettings =
         InitializationSettings(android: initializationSettingsAndroid);
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
     flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
+        .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
         ?.requestNotificationsPermission();
+
     return flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
   Future<void> scheduleDailyNotifications(DateTime? time) async {
+    if (!Platform.isAndroid) {
+      return;
+    }
+
     bool? canNotify = await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
@@ -36,29 +47,24 @@ class NotificationManager {
 
       var scheduledNotificationTZDateTime = tz.TZDateTime.from(time, tz.local);
 
-      // We schedule daily notifications for the whole week.
-      for (int i = 0; i < 7; ++i) {
-        flutterLocalNotificationsPlugin.zonedSchedule(
-            0,
-            'Мова: Карткі',
-            'Запрашаю прагледзіць новае слова!',
-            scheduledNotificationTZDateTime,
-            const NotificationDetails(
-                android: AndroidNotificationDetails(
-                    'MovaCardsChannelID', 'Daily',
-                    channelDescription: 'Daily word update notifications',
-                    importance: Importance.max,
-                    priority: Priority.max)),
-            androidScheduleMode: AndroidScheduleMode.inexact,
-            uiLocalNotificationDateInterpretation:
-                UILocalNotificationDateInterpretation.absoluteTime);
+      flutterLocalNotificationsPlugin.zonedSchedule(
+          0,
+          'Мова: Карткі',
+          'Запрашаю прагледзіць новае слова!',
+          scheduledNotificationTZDateTime,
+          const NotificationDetails(
+              android: AndroidNotificationDetails(
+                  'MovaCardsChannelID', 'Штодзённыя',
+                  channelDescription: 'Вывучай новае слова кожны дзень!',
+                  importance: Importance.max,
+                  priority: Priority.max)),
+          androidScheduleMode: AndroidScheduleMode.inexact,
+          uiLocalNotificationDateInterpretation:
+              UILocalNotificationDateInterpretation.absoluteTime,
+          matchDateTimeComponents: DateTimeComponents.time);
 
-        log.info(
-            'A Notification is scheduled for $scheduledNotificationTZDateTime');
-
-        scheduledNotificationTZDateTime =
-            scheduledNotificationTZDateTime.add(const Duration(days: 1));
-      }
+      log.info(
+          'A Notification is scheduled for $scheduledNotificationTZDateTime');
     }
   }
 }
