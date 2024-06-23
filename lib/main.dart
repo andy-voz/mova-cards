@@ -42,6 +42,8 @@ class MyAppState extends State<MyApp> {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
+    
+    var seedColor = Colors.red;
     return ScreenUtilInit(
         designSize: const Size(411, 890),
         minTextAdapt: true,
@@ -51,12 +53,16 @@ class MyAppState extends State<MyApp> {
             title: 'Мова: Карткі',
             theme: ThemeData(
               colorScheme: ColorScheme.fromSeed(
-                  seedColor: Colors.red, brightness: Brightness.light),
+                  seedColor: seedColor,
+                  dynamicSchemeVariant: DynamicSchemeVariant.fidelity,
+                  brightness: Brightness.light),
               useMaterial3: true,
             ),
             darkTheme: ThemeData(
                 colorScheme: ColorScheme.fromSeed(
-                    seedColor: Colors.red, brightness: Brightness.dark),
+                    seedColor: seedColor,
+                    dynamicSchemeVariant: DynamicSchemeVariant.fidelity,
+                    brightness: Brightness.dark),
                 useMaterial3: true),
             themeMode:
                 darkModeController.darkTheme ? ThemeMode.dark : ThemeMode.light,
