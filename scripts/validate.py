@@ -2,7 +2,8 @@ import re
 import json
 import os
 
-os.chdir(os.getcwd() + '\\..')
+rootPath = os.path.join(os.getcwd(), '..')
+os.chdir(rootPath)
 
 warningsCount = 0
 words_set = set()

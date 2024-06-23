@@ -1,7 +1,8 @@
 import json
 import os
 
-os.chdir(os.getcwd() + '\\..')
+rootPath = os.path.join(os.getcwd(), '..')
+os.chdir(rootPath)
 
 cookedPath = 'assets/cooked/'
 outPath = cookedPath + 'combined.json'

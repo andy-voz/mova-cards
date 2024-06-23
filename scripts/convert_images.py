@@ -4,7 +4,8 @@ import shutil
 
 from PIL import Image
 
-os.chdir(os.getcwd() + '\\..')
+rootPath = os.path.join(os.getcwd(), '..')
+os.chdir(rootPath)
 
 originalsDir = 'assets/images/words/originals/'
 compressedDir = 'assets/cooked/images/'
