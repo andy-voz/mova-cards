@@ -18,18 +18,19 @@ class NotificationManager {
         InitializationSettings(android: initializationSettingsAndroid);
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
     flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
         ?.requestNotificationsPermission();
     return flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
   Future<void> scheduleDailyNotifications(DateTime? time) async {
     bool? canNotify = await flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
         ?.areNotificationsEnabled();
 
-    if (canNotify != null && canNotify)
-    {
+    if (canNotify != null && canNotify) {
       flutterLocalNotificationsPlugin.cancelAll();
       if (time == null) return;
 
@@ -37,21 +38,26 @@ class NotificationManager {
 
       // We schedule daily notifications for the whole week.
       for (int i = 0; i < 7; ++i) {
-        await flutterLocalNotificationsPlugin.zonedSchedule(
+        flutterLocalNotificationsPlugin.zonedSchedule(
             0,
             'Мова: Карткі',
             'Запрашаю прагледзіць новае слова!',
             scheduledNotificationTZDateTime,
             const NotificationDetails(
-                android: AndroidNotificationDetails('MovaCardsChannelID', 'Daily',
-                    channelDescription: 'Daily word update notifications')),
+                android: AndroidNotificationDetails(
+                    'MovaCardsChannelID', 'Daily',
+                    channelDescription: 'Daily word update notifications',
+                    importance: Importance.max,
+                    priority: Priority.max)),
             androidScheduleMode: AndroidScheduleMode.inexact,
-            uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime);
+            uiLocalNotificationDateInterpretation:
+                UILocalNotificationDateInterpretation.absoluteTime);
 
         log.info(
             'A Notification is scheduled for $scheduledNotificationTZDateTime');
 
-        scheduledNotificationTZDateTime = scheduledNotificationTZDateTime.add(const Duration(days: 1));
+        scheduledNotificationTZDateTime =
+            scheduledNotificationTZDateTime.add(const Duration(days: 1));
       }
     }
   }
