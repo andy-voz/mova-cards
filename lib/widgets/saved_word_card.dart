@@ -26,7 +26,8 @@ class SavedWordCard extends StatelessWidget {
 
     return Card(
         child: Stack(children: [
-      Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
+      Row(mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
         Container(
             padding: const EdgeInsets.only(top: 10, left: 5),
             child: ClipRRect(
@@ -57,14 +58,15 @@ class SavedWordCard extends StatelessWidget {
                       style: GoogleFonts.comfortaa(fontSize: 14)))),
         ])
       ]),
-      Container(
-        padding: const EdgeInsets.only(right: 15),
-        height: 120.w,
-        alignment: Alignment.centerRight,
-        child: IconButton.filledTonal(
-            onPressed: () => {goToDefinition(word.by)},
-            icon: const Icon(FontAwesomeIcons.question, size: 30)),
-      )
+      Positioned.fill(
+          child: Align(
+              alignment: Alignment.centerRight,
+              child: Container(
+                padding: const EdgeInsets.only(right: 15),
+                child: IconButton.filledTonal(
+                    onPressed: () => {goToDefinition(word.by)},
+                    icon: const Icon(FontAwesomeIcons.question, size: 30)),
+              )))
     ]));
   }
 }
