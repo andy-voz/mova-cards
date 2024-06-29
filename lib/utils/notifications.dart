@@ -19,7 +19,7 @@ class NotificationManager {
     tz.initializeTimeZones();
 
     var initializationSettingsAndroid =
-        const AndroidInitializationSettings('@mipmap/ic_launcher');
+        const AndroidInitializationSettings('@drawable/ic_notifications');
     var initializationSettings =
         InitializationSettings(android: initializationSettingsAndroid);
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
