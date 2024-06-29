@@ -86,4 +86,8 @@ dependencies {
     implementation 'com.google.android.material:material:1.9.0'
     // For local notifications plugin:
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.2.2'
+    // For preventing emulator crash:
+    // https://stackoverflow.com/questions/74163927/flutter-chrash-in-android-12l-with-no-interface-method-addwindowlayoutinfoliste
+    implementation 'androidx.window:window:1.0.0'
+    implementation 'androidx.window:window-java:1.0.0'
 }
