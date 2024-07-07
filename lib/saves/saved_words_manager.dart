@@ -12,12 +12,14 @@ import 'saved_word.dart';
 final log = Logger('SavedWordManager');
 
 /// If we need to reset users saves for any reason, just need to up this version.
-const int currentVersion = 3;
+const int currentVersion = 4;
 
 const savesFileName = 'savedData.txt';
 
 class SavedWordsManager {
-  final Set<String> _wordIds = {};
+  final Set<String> _learnedWordsIds = {};
+  final Set<String> _rotationWordsIds = {};
+
   final LinkedHashSet<SavedWord> _words = LinkedHashSet();
   final WordsManager _manager;
   final Function _wipeAllCallback;
@@ -49,7 +51,11 @@ class SavedWordsManager {
           var savedWord = SavedWord.read(lines[i].split(SavedWord.separator));
 
           _words.add(savedWord);
-          _wordIds.add(savedWord.id);
+          if (savedWord.inRotation) {
+            _rotationWordsIds.add(savedWord.id);
+          } else {
+            _learnedWordsIds.add(savedWord.id);
+          }
 
           _lastSavedWordId = savedWord.id;
         } catch (e) {
@@ -62,15 +68,20 @@ class SavedWordsManager {
     }
   }
 
-  void addWord(String id) {
+  void addWord(String id, bool toRotation) {
     var dateTime = DateTime.now();
-    var savedWord = SavedWord(id, dateTime);
+    var savedWord = SavedWord(id, dateTime, toRotation);
     if (_words.contains(savedWord)) {
       _words.remove(savedWord);
     }
 
     _words.add(savedWord);
-    _wordIds.add(id);
+
+    if (toRotation) {
+      _rotationWordsIds.add(id);
+    } else {
+      _learnedWordsIds.add(id);
+    }
 
     String line = savedWord.write();
     log.info('Saving: $line');
@@ -130,7 +141,8 @@ class SavedWordsManager {
   }
 
   void _wipeAll() {
-    _wordIds.clear();
+    _learnedWordsIds.clear();
+    _rotationWordsIds.clear();
     _words.clear();
 
     _saveFile.deleteSync();
@@ -138,7 +150,9 @@ class SavedWordsManager {
     _wipeAllCallback();
   }
 
-  Set<String> get getWordIds => _wordIds;
+  Set<String> get getLearnedWordIds => _learnedWordsIds;
+  Set<String> get getRotationWordIds => _rotationWordsIds;
 
+  int get getTotalHistorySize => _words.length;
   String? get getLastSavedWord => _lastSavedWordId;
 }

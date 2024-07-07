@@ -88,8 +88,8 @@ class WordsManager {
       messenger.clearSnackBars();
 
       if (currentWord != null) {
-        _savedWordsManager.addWord(currentWord!.id);
-        if (_savedWordsManager.getWordIds.length % 50 == 0 &&
+        _savedWordsManager.addWord(currentWord!.id, true);
+        if (_savedWordsManager.getTotalHistorySize % 50 == 0 &&
             _prefs.getRateUsShowed() != true) {
           showRateAs();
           _prefs.setRateUsShowed();
@@ -219,7 +219,7 @@ class WordsManager {
   }
 
   void _initActiveCollections(bool goToNext) {
-    Set<String> savedWordIds = _savedWordsManager.getWordIds;
+    Set<String> savedWordIds = _savedWordsManager.getLearnedWordIds;
     _activeWordIds = activeCollections()
         .expand((collection) => collection.words.keys)
         .toSet();
