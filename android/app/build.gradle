@@ -30,7 +30,7 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace "com.example.mova_cards"
-    compileSdkVersion 34
+    compileSdkVersion 35
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -54,8 +54,8 @@ android {
         applicationId "com.skarynalabs.movacards"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion 21
-        targetSdkVersion 34
+        minSdkVersion 26
+        targetSdkVersion 35
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         multiDexEnabled true
@@ -82,10 +82,10 @@ flutter {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.10"
     implementation 'com.google.android.material:material:1.9.0'
     // For local notifications plugin:
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.2.2'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.4'
     // For preventing emulator crash:
     // https://stackoverflow.com/questions/74163927/flutter-chrash-in-android-12l-with-no-interface-method-addwindowlayoutinfoliste
     implementation 'androidx.window:window:1.0.0'

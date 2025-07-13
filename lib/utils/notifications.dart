@@ -25,7 +25,8 @@ class NotificationManager {
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
     flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
         ?.requestNotificationsPermission();
 
     return flutterLocalNotificationsPlugin.initialize(initializationSettings);
@@ -59,8 +60,6 @@ class NotificationManager {
                   importance: Importance.max,
                   priority: Priority.max)),
           androidScheduleMode: AndroidScheduleMode.inexact,
-          uiLocalNotificationDateInterpretation:
-              UILocalNotificationDateInterpretation.absoluteTime,
           matchDateTimeComponents: DateTimeComponents.time);
 
       log.info(
